@@ -1,0 +1,44 @@
+entity BeeUser{
+  	id Long,
+    login String,
+    passwordHash String,
+    firstName String,
+    lastName String,
+    email String,
+    imageUrl String,
+    telephone String,
+    mobile String,
+    langKey String,
+    activated Boolean,
+    activationKey String,
+    resetKey String,
+    resetDate Instant,
+    createdBy String,
+    createdDate Instant,
+    lastModifiedBy String,
+    lastModifiedDate Instant,
+    remark String,
+}
+
+entity BeeUserLoginHistory{
+	id Long,
+    login BeeUser,
+    lastLoginDate Instant,
+    lastLoginIp String,
+    remark String,
+}
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+	BeeUser to BeeUserLoginHistory{login}
+}
+
+// Set pagination options
+paginate BeeUser, BeeUserLoginHistory with infinite-scroll
+paginate BeeUser, BeeUserLoginHistory with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except BeeUser, BeeUserLoginHistory
+// Set an angular suffix
+angularSuffix * with mySuffix
